@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">S2T</string>
+    <string name="action_settings">Configuración</string>
+    <string name="action_about">Acerca de...</string>
+    <string name="listening_value">Sin utilizar...</string>
+    <string name="listening">Escuchando...</string>
+    <string name="idle">Sin utilizar...</string>
+    <string name="listened_value">Texto transcrito</string>
+    <string name="listeningStatus_value">Estado:</string>
+    <string name="On">Encender</string>
+    <string name="Off">Apagar</string>
+</resources>

@@ -1,0 +1,158 @@
+<resources>
+    <string name="app_name">Audi</string>
+    <string name="ringdroid_app_name">Audi</string>
+
+    <!--
+     Main / media select activity
+     -->
+
+    <string name="main_activity_label">Audi</string>
+
+    <string name="search_edit_box">Buscar</string>
+
+    <string name="button_start_record_activity">Grabar nuevo audio</string>
+
+    <string name="sdcard_readonly">Lo sentimos, la tarjeta SD se encuentra en modo de solo lectura y Audi requiere que se pueda escribir en ella.</string>
+    <string name="no_sdcard">Lo sentimos, Audi no puede ser ejecutada a menos que exista una tarjeta SD insertada.</string>
+    <string name="sdcard_shared">Lo sentimos, Audi no puede funcionar si el dispositivo se encuentra conectado como dispositivo USB.</string>
+
+    <string name="button_options">Opciones</string>
+
+    <!--
+     Edit activity
+     -->
+
+    <!-- Labels next to the start and end time edit boxes -->
+    <string name="start_label">Inicio:</string>
+    <string name="end_label">Fin:</string>
+
+    <string name="edit_intent">Editar</string>
+
+    <string name="time_seconds">segundos</string>
+
+    <!-- After you save a notification or ringtone and have more options
+         for what to do with them -->
+    <string name="what_to_do_with_ringtone">Guardado! Deseas establecerlo como tu timbre de llamada para algún contacto?</string>
+    <string name="set_default_notification">Guardado!  Deseas establecerlo como timbre de notificación?</string>
+
+    <string name="make_default_ringtone_button">Establecer como predeterminado</string>
+    <string name="choose_contact_ringtone_button">Asignar a contacto</string>
+    <string name="do_nothing_with_ringtone_button">Cerrar</string>
+
+    <!-- Progress dialog text for loading, recording, or saving... -->
+    <string name="progress_dialog_loading">Cargando…</string>
+    <string name="progress_dialog_recording">Grabando…</string>
+    <string name="progress_dialog_saving">Guardando…</string>
+    <string name="progress_dialog_cancel">Cancelar</string>
+    <string name="progress_dialog_stop">Detener</string>
+
+    <!-- Image button descriptions for accessibility -->
+
+    <string name="start_marker">Marcador de inicio</string>
+    <string name="end_marker">Marcador de final</string>
+    <string name="rewind">Rebobinar</string>
+    <string name="play">Reproducir</string>
+    <string name="stop">Detener</string>
+    <string name="ffwd">Avanzar rápidamente</string>
+    <string name="zoom_in">Zoom +</string>
+    <string name="zoom_out">Zoom -</string>
+    <string name="save_button">Guardar</string>
+
+    <!--
+     Menu items
+     -->
+
+    <string name="menu_save">Guardar</string>
+    <string name="menu_reset">Reiniciar</string>
+    <string name="menu_about">Acerca de...</string>
+    <string name="menu_show_allfiles">Mostrar todos los archivos</string>
+    <string name="menu_open_S2T">Abrir S2T mope</string>
+
+    <!--
+     Context menu items
+     -->
+
+    <string name="context_menu_edit">Editar</string>
+    <string name="context_menu_delete">Eliminar</string>
+    <string name="context_menu_default_ringtone">Establecer como timbre predeterminado</string>
+    <string name="context_menu_contact">Asignar a contacto</string>
+    <string name="context_menu_default_notification">Establecer como timbre de notificación</string>
+
+    <!--
+     File Save dialog
+     -->
+
+    <string name="file_save_title">Guardar como:</string>
+    <string name="file_save_button_save">Guardar</string>
+    <string name="file_save_button_cancel">Cancelar</string>
+
+    <string name="ringtone_type_label">Tipo:</string>
+
+    <string name="type_music">Musica</string>
+    <string name="type_alarm">Alarma</string>
+    <string name="type_notification">Notificación</string>
+    <string name="type_ringtone">Timbre</string>
+
+    <string name="ringtone_name_label">Nombre:</string>
+
+    <string name="artist_name">Audi</string>
+
+    <!--
+     Delete confirmation dialog
+     -->
+
+    <string name="delete_ringtone">Eliminar Timbre</string>
+    <string name="delete_alarm">Eliminar Alarma</string>
+    <string name="delete_notification">Eliminar timbre de Notificación</string>
+    <string name="delete_music">Eliminar música</string>
+    <string name="delete_audio">Eliminar archivo de Audio</string>
+
+    <string name="confirm_delete_audi">¿Estás seguro?</string>
+        <string name="confirm_delete_non_audi"
+            >Estás seguro? El archivo no fue creado por Audi!</string>
+
+    <string name="delete_ok_button">Eliminar</string>
+    <string name="delete_cancel_button">Cancelar</string>
+
+    <string name="delete_failed">No se pudo eliminar el archivo</string>
+
+    <!--
+     Success and error messages
+     -->
+
+    <string name="alert_title_success">OK</string>
+    <string name="alert_title_failure">Error</string>
+    <string name="alert_ok_button">OK</string>
+    <string name="alert_yes_button">Si, por favor!</string>
+    <string name="alert_no_button">No, gracias.</string>
+
+    <string name="save_success_message">Guardado!</string>
+    <string name="default_ringtone_success_message">Cambiar timbre predeterminado</string>
+    <string name="default_notification_success_message">Cambiar timbre de notificación</string>
+    <string name="play_error">No es posible reproducir el archivo</string>
+    <string name="no_unique_filename">No es posible encontrar nombre de archivo único</string>
+    <string name="record_error">Error al grabar audio</string>
+    <string name="too_small_error">No es posible guardar un archivo tan pequeño. Intenta con un audio más largo.</string>
+    <string name="write_error">Error al escribir archivo.</string>
+    <string name="read_error">Error al leer archivo.</string>
+
+    <string name="no_space_error">Tu tarjeta SD se encuentra llena. No existe espacio suficiente para guardar este archivo.</string>
+
+    <string name="bad_extension_error">Lo sentimos, Audi aún no puede editar este tipo de archivos.</string>
+    <string name="no_extension_error">Lo sentimos, Audi no puede editar un archivo cuya extensión no sea .mp3 o .wav.</string>
+
+    <!--
+     Choose Contact Activity
+     -->
+
+    <string name="choose_contact_title">Desea asignar timbre a contacto?</string>
+    <string name="success_contact_ringtone">Timbre asignado exitosamente a:</string>
+
+    <!--
+     About
+     -->
+
+    <string name="about_title">Acerca de Audi</string>
+    <string name="about_text"><![CDATA[Adaptado de ringdroid por CE-Lab para su uso integrado en el conjunto de aplicaciones mope.\nAudi permite editar archivos de audio con formato: MP3, OGG, WAV, AAC y AMR. Es posible tambien asignarlos a timbres, alarmas y timbres de notificaciones.\n\nConsejo: tap anywhere on the waveform to start playing at that position.\n\nTip: while playing, tap the word Start or End to quickly set the start and end markers to the current playback time.\n\nVersion %s\n\nOriginalmente desarrollado por:\nDevelopers: Dominic Mazzoni, Nicolas Faralli\nGraphics: Joseph Wain\nSupport and evangelizing: Eugene Koh\nEnhancements: Dan Klufas\n\nAudi is free software, distributed under the Apache 2.0 license.\n]]></string>
+
+</resources>
