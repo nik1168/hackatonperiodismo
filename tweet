@@ -1,0 +1,69 @@
+//Project By Geeve George.
+
+//All the libraries for the project , it includes wifi , SPI and Twitter Libraries.
+#include <Wire.h>
+
+#include <Dhcp.h>
+#include <Dns.h>
+#include <Ethernet.h>
+#include <EthernetClient.h>
+#include <EthernetServer.h>
+#include <EthernetUdp.h>
+
+#include <Dhcp.h>
+#include <Dns.h>
+#include <WiFi.h>
+#include <WiFiClient.h>
+#include <WiFiServer.h>
+#include <WiFiUdp.h>
+
+#include <SPI.h>
+
+#include <Twitter.h>
+#include <rgb_lcd.h>
+
+const int pinTemp = A0;      // pin of temperature sensor
+
+float temperature;
+int B = 3975;                
+float resistance;
+
+rgb_lcd lcd;
+void setup(){
+  //Initializing Serial Monitor
+      Serial.begin(9600);
+      //Initializing 16*2 LCD Display
+      lcd.begin(16,2);
+}
+
+void loop(){
+ 
+  //Calculating the value of Temperature
+   int val = analogRead(pinTemp);                               // get analog value
+    resistance=(float)(1023-val)*10000/val;                      // get resistance
+    temperature=1/(log(resistance/10000)/B+1/298.15)-273.15;     // calc temperature
+
+        //Sending the tweet to a function
+
+          tweetMessage();
+        delay(6000);
+        lcd.print("Tweeting... :)");
+    
+}
+
+//Initializing the function
+void tweetMessage(){
+  
+    Twitter twitter("Paste Your Token Here");
+
+   int n= temperature ;
+   String stringMsg="Temp is :";
+   stringMsg += String(n);
+   stringMsg +="*C";
+
+    //Convert our message to a character array so as to tweet it to twitter
+   char msg[140];
+   stringMsg.toCharArray(msg, 140);
+
+   twitter.post(msg);
+}
