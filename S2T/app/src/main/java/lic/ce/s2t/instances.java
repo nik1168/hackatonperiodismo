@@ -2,22 +2,33 @@ package lic.ce.s2t;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Message;
 import android.speech.RecognitionListener;
 import android.app.Activity;
-import android.speech.RecognitionService;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.speech.RecognitionService.Callback;
+import android.view.MenuInflater;
+
+import java.util.Arrays;
+import java.util.Properties;
+import java.io.IOException;
+import java.io.FileOutputStream;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ProgressBar;
+import android.widget.ListView;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.media.AudioManager;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -27,18 +38,80 @@ public class instances extends Activity implements RecognitionListener{
     private TextView returnedText, statusText;
     private ToggleButton toggleButton;
     private ProgressBar progressBar;
+    ListView List;
     private SpeechRecognizer speech = null;
+    public ArrayList<String> matches;
+    public ArrayAdapter<String> arrayAdapter;
     private Intent recognizerIntent;
     private String LOG_TAG = "S2T Log";
+    private ImageView I1,I2;
+
+    public void onSaveInstanceState(Bundle savedState) {
+
+        super.onSaveInstanceState(savedState);
+
+        // Note: getValues() is a method in your ArrayAdaptor subclass
+        if (matches!=null){
+            String[] values = Arrays.copyOf(matches.toArray(),matches.toArray().length,String[].class);
+            savedState.putStringArray("listview", values);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instances);
+        I1 = (ImageView) findViewById(R.id.save_icon);
+        I2 = (ImageView) findViewById(R.id.about_icon);
         returnedText = (TextView) findViewById(R.id.recognizedText);
         statusText = (TextView) findViewById(R.id.recognizerStatus);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        List=(ListView) findViewById(R.id.listView);
+
+        I1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), exports.class);
+                i.putExtra("text", matches.get(0).toString());
+                startActivityForResult(i, 100); // 100 is some code to identify the returning result
+            }
+        });
+
+        I2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MessageBox("S2T\nSpeech to Text - CE Lab\n\nHaz click en Encender y espera a que el estado se torne 'Escuchando...'. Toma la muestra de audio en ese momento y espera a que S2T realice la transcripción.");
+            }
+        });
+        if (savedInstanceState != null) {
+            String[] values = savedInstanceState.getStringArray("listview");
+            matches = new ArrayList<String> (Arrays.asList(values));
+            if (values != null) {
+                arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
+                        matches);
+                List.setAdapter(arrayAdapter);
+            }
+        }
+
+        List.setOnItemClickListener(new OnItemClickListener(){
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id){
+                String data=arrayAdapter.getItem((int)id);
+                List.clearChoices();
+                arrayAdapter.clear();
+                arrayAdapter.add(data);
+                List.setAdapter(arrayAdapter);
+            }
+        });
+        // Hay archivo de configuracion?
+        if (ExistsPropertiesFile()){
+            // Si hay, entonces nada.
+
+        }else{
+        // Si no hay, entonces:
+            CreatePropertiesFile(this);
+        }
 
         //ToggleButton Encender:Apagar debe ser inverso. Cuando esta apagado, dice encendido y
         //viceversa
@@ -105,14 +178,8 @@ public class instances extends Activity implements RecognitionListener{
         progressBar.setMax(10);
     }
 
-
-    byte[] sig = new byte[500000] ;
-    int sigPos = 0 ;
-
     @Override
     public void onBufferReceived(byte[] buffer) {
-        System.arraycopy(buffer, 0, sig, sigPos, buffer.length) ;
-        sigPos += buffer.length ;
         Log.i(LOG_TAG, "onBufferReceived: " + buffer);
     }
 
@@ -153,14 +220,16 @@ public class instances extends Activity implements RecognitionListener{
     @Override
     public void onResults(Bundle results) {
         Log.i(LOG_TAG, "onResults");
-        ArrayList<String> matches = results
+        matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-        String text = "";
+        arrayAdapter = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_list_item_1,
+                matches );
 
-        for (String result : matches)
-            text += result + "\n";
-
-        showText(text);
+        List.setAdapter(arrayAdapter);
+        MessageBox(this.getString(R.string.select_better));
+        //showText(text);
         //returnedText.setText(text);
     }
 
@@ -194,7 +263,7 @@ public class instances extends Activity implements RecognitionListener{
                 break;
             case SpeechRecognizer.ERROR_NO_MATCH:
                 // no match:
-                message = "No se encontró una coincidencia.";
+                message = "No se encontró una coincidencia exacta.";
                 break;
             case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
                 // El servicio esta ocupado. No hay una aplicación que este usandolo?
@@ -219,7 +288,9 @@ public class instances extends Activity implements RecognitionListener{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_instances, menu);
+        //getMenuInflater().inflate(R.menu.menu_instances, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_instances, menu);
         return true;
     }
 
@@ -232,6 +303,8 @@ public class instances extends Activity implements RecognitionListener{
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent i = new Intent(getApplicationContext(), exports.class);
+            startActivityForResult(i, 100); // 100 is some code to identify the returning result
             return true;
         }
 
@@ -267,5 +340,32 @@ public class instances extends Activity implements RecognitionListener{
 
     private void showText(String x){
         returnedText.setText(x);
+    }
+
+
+    private boolean ExistsPropertiesFile(){
+        return true;
+    }
+    private void CreatePropertiesFile(Context context) {
+        Properties prop = new Properties();
+        String propertiesPath = context.getFilesDir().getPath().toString() + "/app.properties";
+        try {
+            FileOutputStream out = new FileOutputStream(propertiesPath);
+            prop.setProperty("HomeVersion", "0");
+            prop.setProperty("DatePlaySquare", "0");
+            prop.setProperty("CustomerID", "0");
+            prop.setProperty("DeviceToken", "0");
+            prop.setProperty("CurrentVersionMobile", "0");
+            prop.setProperty("Domain", "Megazy");
+            prop.setProperty("DownloadNewVersion", "0");
+            prop.store(out, null);
+            out.close();
+        } catch (IOException e) {
+            System.err.println("Failed to open app.properties file");
+            e.printStackTrace();
+        }
+    }
+    public void MessageBox(String message){
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">S2T</string>
-    <string name="action_settings">Configuración</string>
     <string name="action_about">Acerca de...</string>
     <string name="listening_value">Sin utilizar...</string>
     <string name="listening">Escuchando...</string>
@@ -9,4 +8,12 @@
     <string name="listeningStatus_value">Estado:</string>
     <string name="On">Encender</string>
     <string name="Off">Apagar</string>
+    <string name="exports">Exportar texto</string>
+    <string name="Ok">OK</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Show_Extra_Results">Mostrar sugerencias de texto</string>
+    <string name="filename">Nombre del archivo...</string>
+    <string name="default_filename">AudioTranscrito.txt</string>
+    <string name="explanation">El archivo será guardado en la ruta base de la tarjeta SD. Si la SD no se encuentra disponible, se guardará en almacenamiento interno (carpeta de descargas).</string>
+    <string name="select_better">Ahora selecciona la mejor transcripción de la lista.</string>
 </resources>
