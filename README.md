@@ -1,11 +1,9 @@
 # hackatonperiodismo
 Repositorio del grupo de CE-Lab para el hackaton de periodismo
 # Listado de aplicaciones
-1. Smart Recorder (HW)
-2. Audi (SW)
-3. S2T (SW)
-4. Pic (SW)
-5. AppMoPe
+1. Audi (SW)
+2. S2T (SW)
+3. AppMoPe
 
 # Licencia
 Apache
