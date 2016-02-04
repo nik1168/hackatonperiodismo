@@ -15,7 +15,8 @@
         android:text="@string/listeningStatus_value"
         android:id="@+id/s2t_status"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:freezesText="true"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -26,14 +27,63 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="26dp"
         android:divider="#9c9999"
-        android:showDividers="beginning|end">
+        android:showDividers="beginning|end"
+        android:id="@+id/linearLayout"
+        android:weightSum="1"
+        android:layout_alignParentBottom="true">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/listened_value"
             android:id="@+id/recognizedText"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:freezesText="true"/>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="139dp"
+            android:id="@+id/listView"
+            android:choiceMode="singleChoice"
+            android:layout_weight="0.94" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/save_icon"
+                android:background="@android:drawable/ic_menu_save"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/s2t_status"
+                android:layout_toStartOf="@+id/s2t_status"
+                android:clickable="true"
+                android:layout_gravity="left" />
+
+            <Space
+                android:layout_width="108dp"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/about_icon"
+                android:background="@android:drawable/ic_dialog_info"
+                android:alpha="0.5"
+                android:layout_below="@+id/save_icon"
+                android:layout_toLeftOf="@+id/s2t_status"
+                android:layout_gravity="right"
+                android:clickable="true"
+                android:adjustViewBounds="false" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <TextView
@@ -43,7 +93,8 @@
         android:id="@+id/recognizerStatus"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:freezesText="true"/>
 
     <ToggleButton
         android:layout_width="wrap_content"
