@@ -1,0 +1,395 @@
+import paho.mqtt.client as mqtt
+import mraa
+import pyupm_i2clcd as lcd
+import mosquitto
+import time 
+import os
+import sys
+import pyaudio
+import sphinxbase
+import wave
+import pocketsphinx as ps
+
+###########Init speech record
+LMD   = "/home/root/led-speech-edison/lm/8484.lm"
+DICTD = "/home/root/led-speech-edison/lm/8484.dic"
+CHUNK = 1024
+FORMAT = pyaudio.paInt8
+CHANNELS = 1
+RATE = 8000
+RECORD_SECONDS = 4
+PATH = 'output'
+
+#########INIT GPios
+lcdDisplay = lcd.Jhd1313m1(0, 0x3E, 0x62)  
+grabar = mraa.Gpio(6)
+reproducir = mraa.Gpio(2)
+
+grabar.dir(mraa.DIR_IN)
+reproducir.dir(mraa.DIR_IN)
+
+ledg = mraa.Gpio(8)
+ledr = mraa.Gpio(9)
+ledb = mraa.Gpio(10)
+ledmT = mraa.Gpio(13)
+
+ledg.dir(mraa.DIR_OUT)
+ledr.dir(mraa.DIR_OUT)
+ledb.dir(mraa.DIR_OUT)
+ledmT.dir(mraa.DIR_OUT)
+
+#sensors and display
+lcdDisplay = lcd.Jhd1313m1(0, 0x3E, 0x62) #start LCD 
+Moisture = mraa.Aio(0); #analog pin  A0
+Gas = mraa.Aio(1);  #analog pin A1
+Temperature = mraa.Aio(2); #analog pin A2: T = (5.0*T*100.0)/4096
+
+#start keyboard
+pot = mraa.Aio(3)
+button = mraa.Gpio(5); # button placed in digital pin 5
+button.dir(mraa.DIR_IN)
+q = ""
+lcdDisplay.setColor(255,0,255)
+	
+#Global bools
+record = False
+
+def on_connect(client, userdata, flags, rc):
+    print("Connected to server. Connection code: "+str(rc))
+    client.subscribe("/hackaton/noticia")
+
+def on_message(client, userdata, msg):
+	print("Topic: "+msg.topic+" Received: "+str(msg.payload)) 
+	lcdDisplay.setColor(255,0,255)
+	####Clean Screen
+	lcdDisplay.setCursor(0, 0)
+	lcdDisplay.write("             ")
+	lcdDisplay.setCursor(1, 0)
+	lcdDisplay.write("             ")
+	time.sleep(0.5)
+	###Write new 
+	lcdDisplay.setCursor(0, 0)
+	lcdDisplay.write("Ultima noticia: ")
+	lcdDisplay.setCursor(1, 0)
+	lcdDisplay.write(str(msg.payload))
+	time.sleep(5)
+	#clean for the keyboard
+	lcdDisplay.setCursor(0, 0)
+	lcdDisplay.write("              ")
+	lcdDisplay.setCursor(1, 0)
+	lcdDisplay.write("              ")
+
+def on_publish(mosq, userdata, mid):
+	#client.publish("/hackaton/noticia", "Hello nick!" ,0)
+	pass;
+
+def decodeSpeech(speech_rec, wav_file):
+	wav_file = file(wav_file,'rb')
+	wav_file.seek(44)
+	speech_rec.decode_raw(wav_file)
+	result = speech_rec.get_hyp()
+	return result[0]
+
+########################subscribe######################
+client_sub = mqtt.Client()
+client_sub.on_connect = on_connect   
+client_sub.on_message = on_message   
+#client_sub.subscribe("/hackaton/noticia")
+client_sub.connect("test.mosquitto.org", 1883, 60) 
+#######################################################
+
+#########################publish#######################
+client = mosquitto.Mosquitto("image-send")
+client.on_publish = on_publish
+client.connect("test.mosquitto.org", 1883, 60)
+#client.publish("/hackaton/noticia", "Hello nick!" ,0)
+#######################################################
+
+if not os.path.exists(PATH):
+        os.makedirs(PATH)
+
+p = pyaudio.PyAudio()
+speech_rec = ps.Decoder(lm=LMD, dict=DICTD)
+
+######################GPIO##########################
+while(1):
+	t = Temperature.read()*500.0/1024
+	m = Moisture.read()
+	g = Gas.read()
+
+	print ("Temp:" + str(t))
+	print ("Humedad:" + str(m))
+	print ("Gas:" + str(g))
+	client.publish("/hackaton/grabadorainteligente", str(t)+";"+str(m)+";"+str(g) ,0)
+
+	if (grabar.read() == 1):
+		record = True
+		ledg.write(1)
+	else:
+		record = False
+
+	if (reproducir.read() == 1):
+		ledr.write(1)
+
+	if (record == True):
+			# Record audio
+	    	stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK)
+	    	print("* Grabando")
+	    	frames = []
+	    	for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
+	    		data = stream.read(CHUNK)
+	    		frames.append(data)
+	    	print("* Se ha finalizado la tarea")
+	    	stream.stop_stream()
+	    	stream.close()
+	    	#p.terminate()
+
+	        fn = "o.wav"
+	    	wf = wave.open(os.path.join(PATH, fn), 'wb')
+	    	wf.setnchannels(CHANNELS)
+	    	wf.setsampwidth(p.get_sample_size(FORMAT))
+	    	wf.setframerate(RATE)
+	    	wf.writeframes(b''.join(frames))
+	    	wf.close()
+
+	        # Decode speech
+	    	wav_file = os.path.join(PATH, fn)
+	    	recognised = decodeSpeech(speech_rec, wav_file)
+	    	rec_words = recognised.split()
+
+	        # Playback recognized word(s)
+	    	cm = 'espeak "'+recognised+'"'
+	    	#os.system(cm)
+
+	val = pot.read()
+
+	lcdDisplay.setColor(255,0,255)
+	lcdDisplay.setCursor(0, 0)
+
+	if (val >= 0 and val <= 25):
+		lcdDisplay.write("Letra actual: " + " a")
+		if (button.read() == 1):
+			q += "a"
+			print(q)
+	if (val > 25 and val <= 50):
+		lcdDisplay.write("Letra actual: " + " b")
+		if (button.read() == 1):
+			q += "b"
+			print(q)
+	if (val > 50 and val <= 75):
+		lcdDisplay.write("Letra actual: " + " c")
+		if (button.read() == 1):
+			q += "c"
+			print(q)
+	if (val > 75 and val <= 100):
+		lcdDisplay.write("Letra actual: " + " d")
+		if (button.read() == 1):
+			q += "d"
+			print(q)
+	if (val > 100 and val <= 125):
+		lcdDisplay.write("Letra actual: " + " e")
+		if (button.read() == 1):
+			q += "e"
+			print(q)
+	if (val > 125 and val <= 150):
+		lcdDisplay.write("Letra actual: " + " f")
+		if (button.read() == 1):
+			q += "f"
+			print(q)
+	if (val > 150 and val <= 175):
+		lcdDisplay.write("Letra actual: " + " g")
+		if (button.read() == 1):
+			q += "g"
+			print(q)
+	if (val > 175 and val <= 200):
+		lcdDisplay.write("Letra actual: " + " h")
+		if (button.read() == 1):
+			q += "h"
+			print(q)
+	if (val > 200 and val <= 225):
+		lcdDisplay.write("Letra actual: " + " i")
+		if (button.read() == 1):
+			q += "i"
+			print(q)
+	if (val > 225 and val <= 250):
+		lcdDisplay.write("Letra actual: " + " j")
+		if (button.read() == 1):
+			q += "j"
+			print(q)
+	if (val > 250 and val <= 275):
+		lcdDisplay.write("Letra actual: " + " k")
+		if (button.read() == 1):
+			q += "k"
+			print(q)
+	if (val > 275 and val <= 300):
+		lcdDisplay.write("Letra actual: " + " l")
+		if (button.read() == 1):
+			q += "l"
+			print(q)
+	if (val > 300 and val <= 325):
+		lcdDisplay.write("Letra actual: " + " m")
+		if (button.read() == 1):
+			q += "m"
+			print(q)
+	if (val > 325 and val <= 350):
+		lcdDisplay.write("Letra actual: " + " n")
+		if (button.read() == 1):
+			q += "n"
+			print(q)
+	if (val > 350 and val <= 375):
+		lcdDisplay.write("Letra actual: " + " o")
+		if (button.read() == 1):
+			q += "o"
+			print(q)
+	if (val > 375 and val <= 400):
+		lcdDisplay.write("Letra actual: " + " p")
+		if (button.read() == 1):
+			q += "p"
+			print(q)
+	if (val > 400 and val <= 425):
+		lcdDisplay.write("Letra actual: " + " q")
+		if (button.read() == 1):
+			q += "q"
+			print(q)
+	if (val > 425 and val <= 450):
+		lcdDisplay.write("Letra actual: " + " r")
+		if (button.read() == 1):
+			q += "r"
+			print(q)
+	if (val > 450 and val <= 475):
+		lcdDisplay.write("Letra actual: " + " s")
+		if (button.read() == 1):
+			q += "s"
+			print(q)
+	if (val > 475 and val <= 500):
+		lcdDisplay.write("Letra actual: " + " t")
+		if (button.read() == 1):
+			q += "t"
+			print(q)
+	if (val > 500 and val <= 525):
+		lcdDisplay.write("Letra actual: " + " u")
+		if (button.read() == 1):
+			q += "u"
+			print(q)
+	if (val > 525 and val <= 550):
+		lcdDisplay.write("Letra actual: " + " v")
+		if (button.read() == 1):
+			q += "v"
+			print(q)
+	if (val > 550 and val <= 575):
+		lcdDisplay.write("Letra actual: " + " w")
+		if (button.read() == 1):
+			q += "w"
+			print(q)
+	if (val > 575 and val <= 600):
+		lcdDisplay.write("Letra actual: " + " x")
+		if (button.read() == 1):
+			q += "x"
+			print(q)
+	if (val > 600 and val <= 625):
+		lcdDisplay.write("Letra actual: " + " y")
+		if (button.read() == 1):
+			q += "y"
+			print(q)
+	if (val > 625 and val <= 650):
+		lcdDisplay.write("Letra actual: " + " z")
+		if (button.read() == 1):
+			q += "z"
+			print(q)
+
+	if (val > 650 and val <= 675):
+		lcdDisplay.write("Letra actual: " + " 0")
+		if (button.read() == 1):
+			q += "0"
+			print(q)
+	if (val > 675 and val <= 700):
+		lcdDisplay.write("Letra actual: " + " 1")
+		if (button.read() == 1):
+			q += "1"
+			print(q)
+	if (val > 700 and val <= 725):
+		lcdDisplay.write("Letra actual: " + " 2")
+		if (button.read() == 1):
+			q += "2"
+			print(q)
+	if (val > 725 and val <= 750):
+		lcdDisplay.write("Letra actual: " + " 3")
+		if (button.read() == 1):
+			q += "3"
+			print(q)
+	if (val > 750 and val <= 775):
+		lcdDisplay.write("Letra actual: " + " 4")
+		if (button.read() == 1):
+			q += "4"
+			print(q)
+	if (val > 775 and val <= 800):
+		lcdDisplay.write("Letra actual: " + " 5")
+		if (button.read() == 1):
+			q += "5"
+			print(q)
+	if (val > 800 and val <= 825):
+		lcdDisplay.write("Letra actual: " + " 6")
+		if (button.read() == 1):
+			q += "6"
+			print(q)
+	if (val > 825 and val <= 850):
+		lcdDisplay.write("Letra actual: " + " 7")
+		if (button.read() == 1):
+			q += "7"
+			print(q)
+	if (val > 850 and val <= 875):
+		lcdDisplay.write("Letra actual: " + " 8")
+		if (button.read() == 1):
+			q += "8"
+			print(q)
+	if (val > 875 and val <= 900):
+		lcdDisplay.write("Letra actual: " + " 9")
+		if (button.read() == 1):
+			q += "9"
+			print(q)
+
+	if (val > 900 and val <= 925):
+		lcdDisplay.write("Letra actual: " + "  ")
+		if (button.read() == 1):
+			q += " "
+			print(q)
+
+	if (val > 925 and val <= 950):
+		lcdDisplay.write("Letra actual: " + " !")
+		if (button.read() == 1):
+			q += "!"
+			print(q)	
+	if (val > 950 and val <= 975):
+		lcdDisplay.write("Letra actual: " + " ?")
+		if (button.read() == 1):
+			q += "?"
+			print(q)	
+
+	if (val > 975 and val <= 1000):
+		lcdDisplay.write("Letra actual: " + " .")
+		if (button.read() == 1):
+			q += "."
+			print(q)	
+	if (val > 1000 and val <= 1024):
+		lcdDisplay.write("Mandar texto? ")
+		if (button.read() == 1):
+			client.publish("/hackaton/noticia", q)
+			q = ""
+			lcdDisplay.setCursor(0, 0)
+			lcdDisplay.write("             ")
+			lcdDisplay.setCursor(1, 0)
+			lcdDisplay.write("             ")
+			time.sleep(0.5)
+
+	lcdDisplay.setCursor(1, 0)
+	lcdDisplay.write("Mensaje:" + q)
+
+	print(q)
+
+	time.sleep(1)	
+
+	client_sub.loop()
+	client.loop()
+
+	#time.sleep(1)
+#######################################################
