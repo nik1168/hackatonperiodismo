@@ -1,0 +1,192 @@
+<!DOCTYPE HTML>
+<!--
+	Helios by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Left Sidebar - Helios by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+
+	</head>
+	<body class="left-sidebar">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<div id="header">
+
+					<!-- Inner -->
+						<div class="inner">
+							<header>
+								<h1><a href="#" id="logo">Grabamope</a></h1>
+								
+							</header>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+							
+								<a href="index.html" class="button circled scrolly">Appmope</a>
+								
+								
+							</ul>
+						</nav>
+
+				</div>
+
+			<!-- Main -->
+				<div class="wrapper style1">
+
+					<div class="container">
+						<div class="wrapper style1">
+
+					<section id="features2" class="container special">
+						<header>
+							<h3>Receptor Grabadora Inteligente</h3>
+							<p>Espera a que tu grabadora inteligente envie algo!</p>
+							<p id="estadograbadora">Cargando...</p>
+							<p id="grabaorainteligente"></p>
+							<h3>Sensor Temperatura:</h3> <p id="temperatura"></p>
+							<h3>Sensor gas:</h3> <p id="gas"></p>
+							<h3>Sensor humedad:</h3> <p id="humedad"></p>
+							<h3>Estado:</h3><p id="estado"></p>
+
+						
+						</header>
+						
+					</section>
+
+				</div>
+					<div class="wrapper style1">
+
+					<section id="features5" class="container special">
+						<header>
+							<h2>Noticia recibida por la grabadora</h2>
+							<h3>Titulo</h3>
+							<p id="titulo"></p>
+							<h3>Contenido</h3>
+							<p id="contenido"></p>
+							<h3>Fecha</h3>
+							<p id="fecha"></p>
+
+						
+						</header>
+						
+					</section>
+
+				</div>
+
+			<!-- Footer -->
+				<div id="footer">
+					<div class="container">
+						<div class="row">
+
+						
+
+						</div>
+						<hr />
+						<script id="cid0020000110601048874" data-cfasync="false" async src="//st.chatango.com/js/gz/emb.js" style="width: 100%;height: 100%;">{"handle":"appmope","arch":"js","styles":{"a":"ff0000","b":54,"c":"000000","d":"000000","k":"ff0000","l":"ff0000","m":"ff0000","p":"10","q":"ff0000","r":54}}</script>
+						<div class="row">
+							
+
+						</div>
+					</div>
+				</div>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.onvisible.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+			<script src="http://www.hivemq.com/demos/websocket-client/js/mqttws31.js" type="text/javascript"></script>
+			<script type="text/javascript">
+        
+ 
+ var clientgrabadora = new Messaging.Client("test.mosquitto.org", 8080, "mygclientitdd_" + parseInt(Math.random() * 100, 10));
+  var clientnoti = new Messaging.Client("test.mosquitto.org", 8080, "mygclientidtdd_" + parseInt(Math.random() * 100, 10));
+
+
+
+  var options3 = {
+     timeout: 3,
+     
+     onSuccess: function () {
+       
+         // $('#estado2').text('Conectado');
+         clientgrabadora.subscribe('/hackaton/grabadorainteligente', {qos: 2});
+          $('#estadograbadora').html("Conectado Grabadora");
+
+     },
+    
+     onFailure: function (message) {
+     	 // clientgrabadora.connect(options3);
+       // $('#estado2').text('Error de conexion:');
+       
+     }
+ };
+ var options4 = {
+     timeout: 3,
+     
+     onSuccess: function () {
+       
+         // $('#estado2').text('Conectado');
+         clientnoti.subscribe('/hackaton/noticiagrabadora', {qos: 2});
+          $('#estadograbadora').html("Conectado Grabadora");
+
+     },
+    
+     onFailure: function (message) {
+     	 // clientgrabadora.connect(options3);
+       // $('#estado2').text('Error de conexion:');
+       
+     }
+ };
+ 
+ clientgrabadora.connect(options3);
+ clientnoti.connect(options4);
+
+ clientgrabadora.onConnectionLost = function (responseObject) {
+     //Depending on your scenario you could implement a reconnect logic here
+     
+      clientgrabadora.connect(options3);
+ };
+
+  clientgrabadora.onMessageArrived = function (message) {
+    
+   
+     //$('#grabaorainteligente').append('<span>Topic: ' + message.destinationName + '  | ' + message.payloadString + '</span><br/>');
+     var como = message.payloadString;
+     var hola = como.split(";");
+     $('#temperatura').html('<span>'+hola[0]+'</span>');
+     $('#humedad').html('<span>'+hola[1]+'</span>');
+     $('#gas').html('<span>'+hola[2]+'</span>');
+    
+ };
+ clientnoti.onMessageArrived = function (message) {
+    
+   
+     //$('#grabaorainteligente').append('<span>Topic: ' + message.destinationName + '  | ' + message.payloadString + '</span><br/>');
+     var como = message.payloadString;
+     var hola = como.split(";");
+     $('#titulo').html('<span>'+hola[0]+'</span>');
+     $('#contenido').html('<span>'+hola[1]+'</span>');
+     $('#fecha').html('<span>'+hola[2]+'</span>');
+    // $('#gas').html('<span>'+hola[2]+'</span>');
+    
+ };
+ </script>
+
+	</body>
+</html>
