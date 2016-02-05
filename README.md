@@ -11,7 +11,8 @@ Repositorio del grupo de CE-Lab para el hackaton de periodismo
        texto, de forma remota de manera muy intuitiva y sencilla. En segundo lugar, el sistema embebido desarrollado cuenta 
        con conectividad wi-fi, bluetooth y 3G lo cual le permite conectarse de distintas maneras con su central (Appmope). El
        objetivo del dispositivo es poder transmitir informacion audiovisual o escrita desde zonas remotas, esta informacion 
-       es recepcionada por nuestra central (Appmope) y retransmitida a nuestra red social o a tweeter. Finalmente, Grabamoppe        tambien cuenta con una serie de sensores que le dan cierto grado de autonomia al dispositivo. Estos sensores le dan 
+       es recepcionada por nuestra central (Appmope) y retransmitida a nuestra red social o a tweeter. Finalmente, Grabamoppe
+       tambien cuenta con una serie de sensores que le dan cierto grado de autonomia al dispositivo. Estos sensores le dan 
        informacion al periodista acerca de la temperatura del ambiente, la humedad del ambiente y la presencia de gases 
        toxicos cercanos. De esta manera, el periodista puede agregar informacion del ambiente a su reportaje.      
        
