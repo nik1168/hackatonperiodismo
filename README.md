@@ -5,7 +5,6 @@ Para ver el logo del equipo, el logo de la aplicación y las fotos de nuestro pr
 https://docs.google.com/document/d/1B8O7EfWFWvqzV4agUm5p_o56TEy4A4x95GsZYpUNr8c/edit?ts=56b41236
 
 Para ver la presentación acceder al siguiente link:
-
 https://prezi.com/ty0ey9okwfrg/celab/
 
        Para contribuir con la mejora en el ámbito laboral periodístico CeLab, creó el proyecto MOPE, que consta de las siguientes aplicaciones:       
