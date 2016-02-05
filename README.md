@@ -2,19 +2,18 @@
 Repositorio del grupo de CE-Lab para el hackaton de periodismo
 
        Para contribuir con la mejora en el ámbito laboral periodístico CeLab, creó el proyecto MOPE, que consta de las siguientes aplicaciones:       
-       * GRABAMOPE: es una solucion hardware que el CE Lab ha desarrollado con la finalidad de ayudar a periodistas de bajos
-       recursos, o en zonas remotas con limitada conectividad. En primer lugar, el dispositivo esta disenado de tal manera 
-       que resulta economico, tiene un costo aproximado de 60$, e incluye las herramientas mas relevantes a la hora de hacer 
+       * GRABAMOPE: es una solución hardware que el CE Lab ha desarrollado con la finalidad de ayudar a periodistas de bajos
+       recursos, o en zonas remotas con limitada conectividad. En primer lugar, el dispositivo esta diseñado de tal manera          que resulta económico, tiene un costo aproximado de 60$, e incluye las herramientas mas relevantes a la hora de hacer 
        periodismo. Estas herramientas son: una grabadora, una webcam, una pantalla de 16x2 y un teclado sencillo. Las 
        primeras herramientas mencionadas (grabadora y webcam) le permiten al periodista grabarentrevistas y, si lo desea, 
-       tambien filmarlas. Las siguientes herramientas (display y teclado) le permiten al periodista comunicarse, a traves de 
+       también filmarlas. Las siguientes herramientas (display y teclado) le permiten al periodista comunicarse, a través de
        texto, de forma remota de manera muy intuitiva y sencilla. En segundo lugar, el sistema embebido desarrollado cuenta 
        con conectividad wi-fi, bluetooth y 3G lo cual le permite conectarse de distintas maneras con su central (Appmope). El
-       objetivo del dispositivo es poder transmitir informacion audiovisual o escrita desde zonas remotas, esta informacion 
+       objetivo del dispositivo es poder transmitir información audiovisual o escrita desde zonas remotas, esta información 
        es recepcionada por nuestra central (Appmope) y retransmitida a nuestra red social o a tweeter. Finalmente, Grabamoppe
-       tambien cuenta con una serie de sensores que le dan cierto grado de autonomia al dispositivo. Estos sensores le dan 
-       informacion al periodista acerca de la temperatura del ambiente, la humedad del ambiente y la presencia de gases 
-       toxicos cercanos. De esta manera, el periodista puede agregar informacion del ambiente a su reportaje.      
+       también cuenta con una serie de sensores que le dan cierto grado de autonomía al dispositivo. Estos sensores le dan 
+       información al periodista acerca de la temperatura del ambiente, la humedad del ambiente y la presencia de gases 
+       tóxicos cercanos. De esta manera, el periodista puede agregar información del ambiente a su reportaje.   
        
        Para ver el funcionamiento del dispositivo ver el video en YouTube
        
