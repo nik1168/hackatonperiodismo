@@ -1,6 +1,12 @@
 # Hackaton de Aplicaciones para periodistas: Mujer, Periodismo y Tecnologia
 Repositorio del grupo de CE-Lab para el hackaton de periodismo
 
+Para ver el logo del equipo, el logo de la aplicación y las fotos de nuestro proyecto acceder al siguiente link: 
+https://docs.google.com/document/d/1B8O7EfWFWvqzV4agUm5p_o56TEy4A4x95GsZYpUNr8c/edit?ts=56b41236
+
+Para ver la presentación acceder al siguiente link:
+https://prezi.com/ty0ey9okwfrg/celab/
+
        Para contribuir con la mejora en el ámbito laboral periodístico CeLab, creó el proyecto MOPE, que consta de las siguientes aplicaciones:       
        * GRABAMOPE: es una solución hardware que el CE Lab ha desarrollado con la finalidad de ayudar a periodistas de bajos
        recursos, o en zonas remotas con limitada conectividad. En primer lugar, el dispositivo esta diseñado de tal manera
@@ -16,7 +22,7 @@ Repositorio del grupo de CE-Lab para el hackaton de periodismo
        información al periodista acerca de la temperatura del ambiente, la humedad del ambiente y la presencia de gases 
        tóxicos cercanos. De esta manera, el periodista puede agregar información del ambiente a su reportaje.   
        
-       Para ver el funcionamiento del dispositivo ver el video en YouTube
+       Para ver el funcionamiento del dispositivo ver el siguiente video:
        https://www.youtube.com/watch?v=jSiJei-eca8
        
        * APPMOPE: Es una plataforma multimedia periodística que permite la interacción y el contacto de los mismos a 
