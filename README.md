@@ -3,7 +3,8 @@ Repositorio del grupo de CE-Lab para el hackaton de periodismo
 
        Para contribuir con la mejora en el ámbito laboral periodístico CeLab, creó el proyecto MOPE, que consta de las siguientes aplicaciones:       
        * GRABAMOPE: es una solución hardware que el CE Lab ha desarrollado con la finalidad de ayudar a periodistas de bajos
-       recursos, o en zonas remotas con limitada conectividad. En primer lugar, el dispositivo esta diseñado de tal manera          que resulta económico, tiene un costo aproximado de 60$, e incluye las herramientas mas relevantes a la hora de hacer 
+       recursos, o en zonas remotas con limitada conectividad. En primer lugar, el dispositivo esta diseñado de tal manera
+       que resulta económico, tiene un costo aproximado de 60$, e incluye las herramientas mas relevantes a la hora de hacer 
        periodismo. Estas herramientas son: una grabadora, una webcam, una pantalla de 16x2 y un teclado sencillo. Las 
        primeras herramientas mencionadas (grabadora y webcam) le permiten al periodista grabarentrevistas y, si lo desea, 
        también filmarlas. Las siguientes herramientas (display y teclado) le permiten al periodista comunicarse, a través de
@@ -16,23 +17,24 @@ Repositorio del grupo de CE-Lab para el hackaton de periodismo
        tóxicos cercanos. De esta manera, el periodista puede agregar información del ambiente a su reportaje.   
        
        Para ver el funcionamiento del dispositivo ver el video en YouTube
+       https://www.youtube.com/watch?v=jSiJei-eca8
        
        * APPMOPE: Es una plataforma multimedia periodística que permite la interacción y el contacto de los mismos a 
          través de un espacio exclusivo para el rubro periodístico. Este presenta tres funciones en cuando a su dinámica 
          de manejo: noticias, reciente, chat y GRABAMOPE.
          
        * S2TMOPE (speech to text): Es un transcriptor de audio automático que facilita el proceso de desgrabación que es tan 
-       común en la labor periodística. Este es de fácil manejo, acceso y contiene modos de exportación independiente, ya sea 
-       de audio o texto escrito.
+         común en la labor periodística. Este es de fácil manejo, acceso y contiene modos de exportación independiente, ya
+         sea de audio o texto escrito.
          
        * AUDIMOPE: Es un grabador y editor de audio que permite recortar y seleccionar secciones, de lo grabado, procesarlo y 
          enviarlo de manera directa y con facilidad. Su consumo de datos es mínimo y su manejo es sencillo.
        
-       * FOTOMOPE: Es una aplicación que mejora la imagen; mejora el color de la imagen y su resolución. Esta permite 
-       visualizar de mejor forma la imagen y mejorar la calidad de la misma.
+       * FOTOMOPE: Es una aplicación que mejora la imagen; mejora el color de la imagen y su resolución. Esta permite
+         visualizar de mejor forma la imagen y mejorar la calidad de la misma.
          
        * VIRTUALMOPE: Es una aplicación que permite dar movimiento e interactividad a lo visual, en este caso, en los 
-       periódicos. Permite visualizar de mejor forma los elementos del periódico a través del dinamismo visual.
+         periódicos. Permite visualizar de mejor forma los elementos del periódico a través del dinamismo visual.
          
 # Listado de aplicaciones
 1. Audi (SW)
